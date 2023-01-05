@@ -1,0 +1,14 @@
+[package]
+name = "balso-layout"
+version.workspace = true
+edition.workspace = true
+description = "Layout algorithms for Balsa molecular line notation."
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+balso-core.workspace = true
+balso-graph.workspace = true
+balso-parser.workspace = true
+nalgebra = "0.33"
+pretty_assertions.workspace = true

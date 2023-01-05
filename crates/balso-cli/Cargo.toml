@@ -1,0 +1,17 @@
+[package]
+name = "balso-cli"
+version.workspace = true
+edition.workspace = true
+description = "CLI for Balsa molecular line notation."
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+balso.workspace = true
+balso-core.workspace = true
+balso-graph.workspace = true
+balso-layout.workspace = true
+balso-parser.workspace = true
+clap = { version = "4.4", features = ["derive"] }
+nalgebra = "0.33"
+pretty_assertions.workspace = true

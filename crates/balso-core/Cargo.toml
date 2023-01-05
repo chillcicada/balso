@@ -1,0 +1,10 @@
+[package]
+name = "balso-core"
+version.workspace = true
+edition.workspace = true
+description = "Core types and primitives for Balsa molecular line notation."
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+pretty_assertions.workspace = true

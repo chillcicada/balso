@@ -1,0 +1,12 @@
+[package]
+name = "balso-parser"
+version.workspace = true
+edition.workspace = true
+description = "Parser for Balsa molecular line notation."
+homepage.workspace = true
+license.workspace = true
+
+[dependencies]
+balso-core.workspace = true
+lyn = "0.1.0"
+pretty_assertions.workspace = true
