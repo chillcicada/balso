@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use balso_core::{AtomKind, BondKind, Bridge};
 use balso_parser::Follower;
 
-use super::{Atom, Bond};
+use super::{svg::generate_svg, Atom, Bond};
 
 #[derive(Debug, PartialEq)]
 pub struct Builder {
@@ -25,6 +25,10 @@ impl Builder {
 
     pub fn build(self) -> Vec<Atom> {
         self.atoms
+    }
+
+    pub fn to_svg(&self) -> String {
+        generate_svg(&self.atoms)
     }
 }
 
@@ -117,10 +121,7 @@ mod build {
         builder.root(&AtomKind::Star);
         builder.root(&AtomKind::Star);
 
-        assert_eq!(
-            builder.build(),
-            vec![Atom::star(vec![]), Atom::star(vec![])]
-        )
+        assert_eq!(builder.build(), vec![Atom::star(vec![]), Atom::star(vec![])])
     }
 
     #[test]
@@ -132,10 +133,7 @@ mod build {
 
         assert_eq!(
             builder.build(),
-            vec![
-                Atom::star(vec![Bond::elided(1)]),
-                Atom::star(vec![Bond::elided(0)])
-            ]
+            vec![Atom::star(vec![Bond::elided(1)]), Atom::star(vec![Bond::elided(0)])]
         )
     }
 

@@ -16,7 +16,8 @@ pub enum Element {
     Yb, Lu, Hf, Ta, W,  Re, Os, Ir, Pt, Au, // 7
     Hg, Tl, Pb, Bi, Po, At, Rn, Fr, Ra, Ac, // 8
     Th, Pa, U,  Np, Pu, Am, Cm, Bk, Cf, Es, // 9
-    Fm, Md, No, Lr, Rf                      // 10
+    Fm, Md, No, Lr, Rf,                      // 10
+    D, T // Deuterium and Tritium
 }
 
 // TABLE 8
@@ -187,6 +188,9 @@ impl fmt::Display for Element {
             Element::Yb => "Yb",
             Element::Zn => "Zn",
             Element::Zr => "Zr",
+            // Deuterium and Tritium
+            Element::D => "D",
+            Element::T => "T",
         })
     }
 }

@@ -8,5 +8,5 @@ license.workspace = true
 
 [dependencies]
 balso-core.workspace = true
-lyn = "0.1.0"
+
 pretty_assertions.workspace = true

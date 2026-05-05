@@ -1,3 +1,0 @@
-[alias]
-wasm = "build --target wasm32-unknown-unknown --release"
-autotest = ["watch", "-x t --lib --all"]

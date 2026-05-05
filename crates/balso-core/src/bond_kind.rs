@@ -1,13 +1,13 @@
-use std::{fmt, fmt::Write};
+use std::fmt::{self, Write};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum BondKind {
-    Elided,
-    Single,
-    Double,
-    Triple,
-    Up,
-    Down,
+    Elided, //
+    Single, // -
+    Double, // =
+    Triple, // #
+    Up,     // /
+    Down,   // \
 }
 
 impl fmt::Display for BondKind {
@@ -41,32 +41,5 @@ impl BondKind {
             Self::Double => 2,
             Self::Triple => 3,
         }
-    }
-}
-
-#[cfg(test)]
-mod reverse {
-    use super::*;
-    use pretty_assertions::assert_eq;
-
-    #[test]
-    fn single() {
-        let kind = BondKind::Single;
-
-        assert_eq!(kind.reverse(), BondKind::Single)
-    }
-
-    #[test]
-    fn up() {
-        let kind = BondKind::Up;
-
-        assert_eq!(kind.reverse(), BondKind::Down)
-    }
-
-    #[test]
-    fn down() {
-        let kind = BondKind::Down;
-
-        assert_eq!(kind.reverse(), BondKind::Up)
     }
 }

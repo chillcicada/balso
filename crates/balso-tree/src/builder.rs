@@ -34,6 +34,10 @@ impl Builder {
         }
     }
 
+    pub fn to_svg(&self) -> String {
+        todo!()
+    }
+
     fn pop_back(&mut self, index: usize) {
         while let Some(link) = self.chain.pop() {
             let head = self.head();
@@ -73,8 +77,7 @@ impl Follower for Builder {
     }
 
     fn extend(&mut self, bond_kind: &BondKind, atom_kind: &AtomKind) {
-        self.chain
-            .push(Link::Bond(bond_kind.clone(), Atom::new(atom_kind)))
+        self.chain.push(Link::Bond(bond_kind.clone(), Atom::new(atom_kind)))
     }
 
     fn bridge(&mut self, bond_kind: &BondKind, bridge: &Bridge) {
@@ -157,9 +160,7 @@ mod build {
 
         assert_eq!(
             builder.build(),
-            Atom::star(vec![Edge::elided_star(vec![Edge::elided_star(
-                vec![]
-            )])])
+            Atom::star(vec![Edge::elided_star(vec![Edge::elided_star(vec![])])])
         )
     }
 
@@ -175,10 +176,7 @@ mod build {
 
         assert_eq!(
             builder.build(),
-            Atom::star(vec![
-                Edge::elided_star(vec![]),
-                Edge::elided_star(vec![])
-            ])
+            Atom::star(vec![Edge::elided_star(vec![]), Edge::elided_star(vec![])])
         )
     }
 
@@ -196,9 +194,7 @@ mod build {
             builder.build(),
             Atom::star(vec![
                 Edge::elided_bridge(Bridge::B1),
-                Edge::elided_star(vec![Edge::elided_star(vec![
-                    Edge::elided_bridge(Bridge::B1)
-                ])])
+                Edge::elided_star(vec![Edge::elided_star(vec![Edge::elided_bridge(Bridge::B1)])])
             ])
         )
     }

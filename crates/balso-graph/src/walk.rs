@@ -12,11 +12,7 @@ pub fn walk(atoms: &Vec<Atom>, follower: &mut impl Follower) {
     }
 }
 
-fn walk_root(
-    mut hid: usize,
-    atoms: &mut HashMap<usize, &Atom>,
-    follower: &mut impl Follower,
-) {
+fn walk_root(mut hid: usize, atoms: &mut HashMap<usize, &Atom>, follower: &mut impl Follower) {
     let root = match atoms.remove(&hid) {
         Some(atom) => atom,
         None => return,
@@ -51,11 +47,7 @@ fn walk_root(
     }
 }
 
-fn bonds(
-    id: usize,
-    atom: &Atom,
-    back: Option<usize>,
-) -> impl Iterator<Item = (bool, usize, &Bond)> {
+fn bonds(id: usize, atom: &Atom, back: Option<usize>) -> impl Iterator<Item = (bool, usize, &Bond)> {
     atom.bonds
         .iter()
         .filter(move |bond| match back {
@@ -75,9 +67,10 @@ fn bonds(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use balso_core::{AtomKind, Bracket, Element, Symbol};
     use balso_parser::Writer;
+
+    use super::*;
     use pretty_assertions::assert_eq;
 
     #[test]
@@ -122,10 +115,7 @@ mod tests {
 
     #[test]
     fn p2() {
-        let graph = vec![
-            Atom::star(vec![Bond::elided(1)]),
-            Atom::star(vec![Bond::elided(0)]),
-        ];
+        let graph = vec![Atom::star(vec![Bond::elided(1)]), Atom::star(vec![Bond::elided(0)])];
         let mut writer = Writer::new();
 
         walk(&graph, &mut writer);
@@ -135,10 +125,7 @@ mod tests {
 
     #[test]
     fn p2_triple() {
-        let graph = vec![
-            Atom::star(vec![Bond::triple(1)]),
-            Atom::star(vec![Bond::triple(0)]),
-        ];
+        let graph = vec![Atom::star(vec![Bond::triple(1)]), Atom::star(vec![Bond::triple(0)])];
         let mut writer = Writer::new();
 
         walk(&graph, &mut writer);
@@ -222,12 +209,7 @@ mod tests {
     fn s4_terminal() {
         let graph = vec![
             Atom::star(vec![Bond::elided(1)]),
-            Atom::star(vec![
-                Bond::elided(0),
-                Bond::elided(2),
-                Bond::elided(3),
-                Bond::elided(4),
-            ]),
+            Atom::star(vec![Bond::elided(0), Bond::elided(2), Bond::elided(3), Bond::elided(4)]),
             Atom::star(vec![Bond::elided(1)]),
             Atom::star(vec![Bond::elided(1)]),
             Atom::star(vec![Bond::elided(1)]),

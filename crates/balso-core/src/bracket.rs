@@ -1,4 +1,4 @@
-use std::{fmt, fmt::Write};
+use std::fmt::{self, Write};
 
 use super::{AtomParity, Charge, Isotope, Symbol, VirtualHydrogen};
 
@@ -53,9 +53,7 @@ mod hydrogens {
 
     #[test]
     fn none() {
-        let bracket = Bracket {
-            ..Default::default()
-        };
+        let bracket = Bracket { ..Default::default() };
 
         assert_eq!(bracket.hydrogens(), 0)
     }

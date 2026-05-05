@@ -1,3 +1,5 @@
+//! The core library for the Balso project
+
 mod atom_kind;
 mod atom_parity;
 mod bond_kind;

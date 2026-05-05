@@ -4,9 +4,9 @@ use super::{Element, Selection};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Symbol {
-    Star,
-    Element(Element),
-    Selection(Selection),
+    Star,                 // *
+    Element(Element),     // e.g. C, N, O
+    Selection(Selection), // e.g. c, n, o
 }
 
 impl fmt::Display for Symbol {

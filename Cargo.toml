@@ -11,13 +11,15 @@ homepage = "https://github.com/chillcicada/balso/"
 license = "MIT"
 
 [workspace.dependencies]
-balso = { path = "crates/balso" }
 balso-core = { path = "crates/balso-core" }
 balso-graph = { path = "crates/balso-graph" }
-balso-layout = { path = "crates/balso-layout" }
 balso-parser = { path = "crates/balso-parser" }
 balso-tree = { path = "crates/balso-tree" }
-pretty_assertions = "1.0.0"
+
+facet = "0.34"
+facet-args = "0.34"
+
+pretty_assertions = "1.4.1"
 
 [profile.release]
 opt-level = 3

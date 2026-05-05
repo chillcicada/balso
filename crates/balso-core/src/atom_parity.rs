@@ -1,9 +1,9 @@
-use std::{fmt, fmt::Write};
+use std::fmt::{self, Write};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum AtomParity {
-    Counterclockwise,
-    Clockwise,
+    Counterclockwise, // @
+    Clockwise,        // @@
 }
 
 impl fmt::Display for AtomParity {

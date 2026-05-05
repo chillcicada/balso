@@ -34,12 +34,8 @@ impl AtomKind {
         if let AtomKind::Bracket(bracket) = self {
             if bracket.hydrogens.is_some() {
                 bracket.parity = match bracket.parity {
-                    Some(AtomParity::Counterclockwise) => {
-                        Some(AtomParity::Clockwise)
-                    }
-                    Some(AtomParity::Clockwise) => {
-                        Some(AtomParity::Counterclockwise)
-                    }
+                    Some(AtomParity::Counterclockwise) => Some(AtomParity::Clockwise),
+                    Some(AtomParity::Clockwise) => Some(AtomParity::Counterclockwise),
                     None => None,
                 };
             }
@@ -70,9 +66,7 @@ impl AtomKind {
 
     pub fn virtual_hydrogens(&self) -> u8 {
         match self {
-            AtomKind::Star | AtomKind::Shortcut(_) | AtomKind::Selection(_) => {
-                0
-            }
+            AtomKind::Star | AtomKind::Shortcut(_) | AtomKind::Selection(_) => 0,
             AtomKind::Bracket(bracket) => match &bracket.hydrogens {
                 Some(hydrogens) => hydrogens.into(),
                 None => 0,
