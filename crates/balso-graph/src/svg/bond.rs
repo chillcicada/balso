@@ -4,7 +4,7 @@ use crate::Bond;
 use balso_core::BondKind;
 
 const LINE_OFFSET: f64 = 2.5;
-const DOUBLE_BOND_SCALE: f64 = 1.0 / 6.0;
+const DOUBLE_BOND_SCALE: f64 = 1.0 / 3.0;
 const LINE_STYLE: &str = "stroke-width:1;stroke-linecap:round;stroke-dasharray:none";
 
 #[derive(Debug, Clone)]
@@ -21,7 +21,7 @@ pub enum OffsetDirection {
 
 fn render_line(out: &mut String, x1: f64, y1: f64, x2: f64, y2: f64, stroke: &str) {
     out.push_str(&format!(
-        r#"<line x1="{}" y1="{}" x2="{}" y2="{}" style="{};stroke:{}" />"#,
+        r#"<line x1="{:.3}" y1="{:.3}" x2="{:.3}" y2="{:.3}" style="{};stroke:{}" />"#,
         x1, y1, x2, y2, LINE_STYLE, stroke
     ));
 }
@@ -37,7 +37,7 @@ fn perpendicular_offset(start: Vec2, end: Vec2) -> (f64, f64, f64, f64) {
 
 pub fn render_bond(start: Vec2, end: Vec2, bond: &Bond, out: &mut String, offset_type: BondOffsetType) {
     match bond.kind {
-        BondKind::Elided | BondKind::Single => {
+        BondKind::Elided | BondKind::Single | BondKind::Up | BondKind::Down => {
             render_line(out, start.x, start.y, end.x, end.y, "white");
         }
         BondKind::Double => {
@@ -58,12 +58,13 @@ pub fn render_bond(start: Vec2, end: Vec2, bond: &Bond, out: &mut String, offset
                     };
                     let ox = nx * LINE_OFFSET * sign;
                     let oy = ny * LINE_OFFSET * sign;
+                    let (ddx, ddy) = (dx * DOUBLE_BOND_SCALE / 2.0, dy * DOUBLE_BOND_SCALE / 2.0);
                     render_line(
                         out,
-                        start.x + ox + dx * DOUBLE_BOND_SCALE,
-                        start.y + oy + dy * DOUBLE_BOND_SCALE,
-                        end.x + ox - dx * DOUBLE_BOND_SCALE,
-                        end.y + oy - dy * DOUBLE_BOND_SCALE,
+                        start.x + ox + ddx,
+                        start.y + oy + ddy,
+                        end.x + ox - ddx,
+                        end.y + oy - ddy,
                         "blue",
                     );
                 }
@@ -78,7 +79,5 @@ pub fn render_bond(start: Vec2, end: Vec2, bond: &Bond, out: &mut String, offset
                 render_line(out, start.x + ox, start.y + oy, end.x + ox, end.y + oy, "red");
             }
         }
-        BondKind::Down => todo!(),
-        BondKind::Up => todo!(),
     }
 }

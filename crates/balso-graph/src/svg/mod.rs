@@ -20,6 +20,9 @@ fn position_atoms(atoms: &[Atom]) -> Vec<Vec2> {
     if n == 0 {
         return vec![];
     }
+    if n == 1 {
+        return vec![Vec2 { x: 0.0, y: 0.0 }];
+    }
 
     let mut positions = vec![Vec2 { x: 0.0, y: 0.0 }; n];
     let mut visited = vec![false; n];
@@ -49,15 +52,20 @@ fn position_atoms(atoms: &[Atom]) -> Vec<Vec2> {
                 .bonds
                 .iter()
                 .any(|bond| bond.tid == neighbor && bond.kind == BondKind::Triple);
+
             let angle = if is_collinear || collinear {
                 angle_from_parent
-            } else if child_count == 1 {
-                angle_from_parent + PI / 3.0 * if flip { 1.0 } else { -1.0 }
             } else {
-                match i {
-                    0 => angle_from_parent + PI / 3.0,
-                    1 => angle_from_parent - PI / 3.0,
-                    _ => angle_from_parent,
+                // todo!() handle cis and trans isomers for double bonds
+
+                match child_count {
+                    1 => angle_from_parent + PI / 3.0 * if flip { -1.0 } else { 1.0 },
+                    2 => match i {
+                        0 => angle_from_parent + PI / 3.0,
+                        1 => angle_from_parent - PI / 3.0,
+                        _ => unreachable!(),
+                    },
+                    _ => angle_from_parent + (i as f64 - 1.0) * 2.0 * PI / (child_count as f64 + 1.0),
                 }
             };
             positions[neighbor] = Vec2 {
@@ -68,7 +76,7 @@ fn position_atoms(atoms: &[Atom]) -> Vec<Vec2> {
         }
     }
 
-    dfs(0, atoms, &mut positions, &mut visited, START_ANGLE, true, false);
+    dfs(0, atoms, &mut positions, &mut visited, START_ANGLE, false, false);
 
     positions
 }
@@ -78,6 +86,12 @@ pub fn generate_svg(atoms: &[Atom]) -> String {
 
     if positions.is_empty() {
         return String::from(r#"<svg xmlns="http://www.w3.org/2000/svg"></svg>"#);
+    }
+    if positions.len() == 1 {
+        return format!(
+            r#"<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="auto" viewBox="-20 -20 40 40"><text x="0" y="0" style="text-anchor:middle;dominant-baseline:middle;font-family:sans-serif;font-size:14;fill:white">{}</text></svg>"#,
+            atoms[0].kind
+        );
     }
 
     let min_x = positions.iter().map(|p| p.x).fold(f64::MAX, |a, b| a.min(b));
@@ -93,7 +107,7 @@ pub fn generate_svg(atoms: &[Atom]) -> String {
 
     let mut svg = String::new();
     svg.push_str(&format!(
-        r#"<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="{} {} {} {}">"#,
+        r#"<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="auto" viewBox="{:.3} {:.3} {:.3} {:.3}">"#,
         start_x, start_y, width, height
     ));
 
@@ -120,12 +134,14 @@ pub fn generate_svg(atoms: &[Atom]) -> String {
             }
         }
 
-        render_text(atom, positions[i], &mut masks, &mut texts);
+        println!("Atom {} at ({:.3}, {:.3})", atom.kind, positions[i].x, positions[i].y);
+
+        render_text(atom, positions[i], atom.is_heteroatom(), &mut masks, &mut texts);
     }
 
     if !masks.is_empty() {
         svg.push_str(&format!(
-            r#"<mask id="text-mask"><rect x="{}" y="{}" width="{}" height="{}" fill="white"/>{}</mask>"#,
+            r#"<mask id="text-mask"><rect x="{:.3}" y="{:.3}" width="{:.3}" height="{:.3}" fill="white"/>{}</mask>"#,
             start_x, start_y, width, height, masks
         ));
         svg.push_str(r#"<g mask="url(#text-mask)">"#);
