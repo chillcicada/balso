@@ -9,7 +9,7 @@ use balso_core::BondKind;
 use super::Atom;
 
 use bond::{render_bond, BondOffsetType, OffsetDirection};
-use text::render_text;
+use text::render_atom;
 use util::Vec2;
 
 const BOND_LENGTH: f64 = 60.0;
@@ -45,7 +45,8 @@ fn position_atoms(atoms: &[Atom]) -> Vec<Vec2> {
             .map(|bond| bond.tid)
             .collect();
 
-        let child_count = unvisited_neighbors.len();
+        let child_count = atoms[atom_idx].bonds.len();
+        let unvisited_count = unvisited_neighbors.len();
 
         for (i, &neighbor) in unvisited_neighbors.iter().enumerate() {
             let is_collinear = atoms[atom_idx]
@@ -56,16 +57,11 @@ fn position_atoms(atoms: &[Atom]) -> Vec<Vec2> {
             let angle = if is_collinear || collinear {
                 angle_from_parent
             } else {
-                // todo!() handle cis and trans isomers for double bonds
-
-                match child_count {
-                    1 => angle_from_parent + PI / 3.0 * if flip { -1.0 } else { 1.0 },
-                    2 => match i {
-                        0 => angle_from_parent + PI / 3.0,
-                        1 => angle_from_parent - PI / 3.0,
-                        _ => unreachable!(),
-                    },
-                    _ => angle_from_parent + (i as f64 - 1.0) * 2.0 * PI / (child_count as f64 + 1.0),
+                // todo!()
+                if unvisited_count == 1 && atoms[unvisited_neighbors[0]].bonds.len() <= 2 {
+                    angle_from_parent + PI / 3.0 * if flip { -1.0 } else { 1.0 }
+                } else {
+                    angle_from_parent + (i as f64 - 1.0) * 2.0 * PI / (child_count as f64)
                 }
             };
             positions[neighbor] = Vec2 {
@@ -136,7 +132,7 @@ pub fn generate_svg(atoms: &[Atom]) -> String {
 
         println!("Atom {} at ({:.3}, {:.3})", atom.kind, positions[i].x, positions[i].y);
 
-        render_text(atom, positions[i], atom.is_heteroatom(), &mut masks, &mut texts);
+        render_atom(atom, positions[i], atom.is_heteroatom(), &mut masks, &mut texts);
     }
 
     if !masks.is_empty() {

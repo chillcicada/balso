@@ -73,6 +73,14 @@ impl AtomKind {
             },
         }
     }
+
+    pub fn text(&self) -> String {
+        if let AtomKind::Bracket(bracket) = self {
+            bracket.symbol.to_string()
+        } else {
+            self.to_string()
+        }
+    }
 }
 
 #[cfg(test)]

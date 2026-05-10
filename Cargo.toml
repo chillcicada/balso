@@ -12,12 +12,12 @@ license = "MIT"
 
 [workspace.dependencies]
 balso-core = { path = "crates/balso-core" }
-balso-graph = { path = "crates/balso-graph" }
+balso-graph = { path = "crates/balso-graph", features = ["svg"] }
 balso-parser = { path = "crates/balso-parser" }
 balso-tree = { path = "crates/balso-tree" }
 
-facet = "0.34"
-facet-args = "0.34"
+facet = "0.43"
+facet-args = "0.43"
 
 pretty_assertions = "1.4.1"
 

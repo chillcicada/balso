@@ -3,7 +3,10 @@ use std::collections::HashMap;
 use balso_core::{AtomKind, BondKind, Bridge};
 use balso_parser::Follower;
 
-use super::{svg::generate_svg, Atom, Bond};
+use super::{Atom, Bond};
+
+#[cfg(feature = "svg")]
+use super::svg::generate_svg;
 
 #[derive(Debug, PartialEq)]
 pub struct Builder {
@@ -27,6 +30,7 @@ impl Builder {
         self.atoms
     }
 
+    #[cfg(feature = "svg")]
     pub fn to_svg(&self) -> String {
         generate_svg(&self.atoms)
     }
