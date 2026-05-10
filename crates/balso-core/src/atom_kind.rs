@@ -75,10 +75,9 @@ impl AtomKind {
     }
 
     pub fn text(&self) -> String {
-        if let AtomKind::Bracket(bracket) = self {
-            bracket.symbol.to_string()
-        } else {
-            self.to_string()
+        match self {
+            AtomKind::Star | AtomKind::Shortcut(_) | AtomKind::Selection(_) => self.to_string(),
+            AtomKind::Bracket(bracket) => bracket.symbol.to_string(),
         }
     }
 }
