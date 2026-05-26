@@ -16,8 +16,8 @@ balso-graph = { path = "crates/balso-graph" }
 balso-parser = { path = "crates/balso-parser" }
 balso-tree = { path = "crates/balso-tree" }
 
-facet = "0.34"
-facet-args = "0.34"
+facet = "0.46.5"
+facet-args = "0.43.2"
 
 pretty_assertions = "1.4.1"
 
