@@ -4,7 +4,7 @@ members = ["crates/*"]
 
 [workspace.package]
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 description = "Reference implementation for the Balsa molecular line notation."
 readme = "README.md"
 homepage = "https://github.com/chillcicada/balso/"
