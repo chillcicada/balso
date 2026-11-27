@@ -74,19 +74,11 @@ impl AtomKind {
         }
     }
 
-    pub fn is_carbon(&self) -> bool {
-        let element: Element = match self {
-            Self::Star => return false,
-            Self::Shortcut(shortcut) => shortcut.into(),
-            Self::Selection(selection) => selection.into(),
-            Self::Bracket(bracket) => match &bracket.symbol {
-                Symbol::Star => return false,
-                Symbol::Element(element) => element.clone(),
-                Symbol::Selection(selection) => selection.into(),
-            },
-        };
-
-        element == Element::C
+    pub fn text(&self) -> String {
+        match self {
+            AtomKind::Star | AtomKind::Shortcut(_) | AtomKind::Selection(_) => self.to_string(),
+            AtomKind::Bracket(bracket) => bracket.symbol.to_string(),
+        }
     }
 }
 

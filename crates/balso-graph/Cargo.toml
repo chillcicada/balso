@@ -11,3 +11,6 @@ balso-core.workspace = true
 balso-parser.workspace = true
 
 pretty_assertions.workspace = true
+
+[features]
+svg = []
